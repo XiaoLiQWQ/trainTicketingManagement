@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTrainMapper">
+    
+    <resultMap type="SysTrain" id="SysTrainResult">
+        <result property="id"    column="id"    />
+        <result property="trainNumber"    column="train_number"    />
+        <result property="startingStation"    column="starting_station"    />
+        <result property="arrivalStation"    column="arrival_station"    />
+        <result property="startingTime"    column="starting_time"    />
+        <result property="arrivalTime"    column="arrival_time"    />
+        <result property="platformNumber"    column="platform_number"    />
+        <result property="seat"    column="seat"    />
+        <result property="ticketPrice"    column="ticket_price"    />
+        <result property="remainingTickets"    column="remaining_tickets"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysTrainVo">
+        select id, train_number, starting_station, arrival_station, starting_time, arrival_time, platform_number, seat, ticket_price, remaining_tickets, create_by, create_time, update_by, update_time, remark from sys_train
+    </sql>
+
+    <select id="selectSysTrainList" parameterType="SysTrain" resultMap="SysTrainResult">
+        <include refid="selectSysTrainVo"/>
+        <where>  
+            <if test="trainNumber != null  and trainNumber != ''"> and train_number = #{trainNumber}</if>
+            <if test="startingStation != null  and startingStation != ''"> and starting_station = #{startingStation}</if>
+            <if test="arrivalStation != null  and arrivalStation != ''"> and arrival_station = #{arrivalStation}</if>
+            <if test="startingTime != null "> and starting_time = #{startingTime}</if>
+            <if test="arrivalTime != null "> and arrival_time = #{arrivalTime}</if>
+            <if test="platformNumber != null "> and platform_number = #{platformNumber}</if>
+            <if test="seat != null  and seat != ''"> and seat = #{seat}</if>
+            <if test="ticketPrice != null "> and ticket_price = #{ticketPrice}</if>
+            <if test="remainingTickets != null "> and remaining_tickets = #{remainingTickets}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysTrainById" parameterType="Long" resultMap="SysTrainResult">
+        <include refid="selectSysTrainVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysTrain" parameterType="SysTrain" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_train
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="trainNumber != null and trainNumber != ''">train_number,</if>
+            <if test="startingStation != null and startingStation != ''">starting_station,</if>
+            <if test="arrivalStation != null and arrivalStation != ''">arrival_station,</if>
+            <if test="startingTime != null">starting_time,</if>
+            <if test="arrivalTime != null">arrival_time,</if>
+            <if test="platformNumber != null">platform_number,</if>
+            <if test="seat != null and seat != ''">seat,</if>
+            <if test="ticketPrice != null">ticket_price,</if>
+            <if test="remainingTickets != null">remaining_tickets,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="trainNumber != null and trainNumber != ''">#{trainNumber},</if>
+            <if test="startingStation != null and startingStation != ''">#{startingStation},</if>
+            <if test="arrivalStation != null and arrivalStation != ''">#{arrivalStation},</if>
+            <if test="startingTime != null">#{startingTime},</if>
+            <if test="arrivalTime != null">#{arrivalTime},</if>
+            <if test="platformNumber != null">#{platformNumber},</if>
+            <if test="seat != null and seat != ''">#{seat},</if>
+            <if test="ticketPrice != null">#{ticketPrice},</if>
+            <if test="remainingTickets != null">#{remainingTickets},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysTrain" parameterType="SysTrain">
+        update sys_train
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trainNumber != null and trainNumber != ''">train_number = #{trainNumber},</if>
+            <if test="startingStation != null and startingStation != ''">starting_station = #{startingStation},</if>
+            <if test="arrivalStation != null and arrivalStation != ''">arrival_station = #{arrivalStation},</if>
+            <if test="startingTime != null">starting_time = #{startingTime},</if>
+            <if test="arrivalTime != null">arrival_time = #{arrivalTime},</if>
+            <if test="platformNumber != null">platform_number = #{platformNumber},</if>
+            <if test="seat != null and seat != ''">seat = #{seat},</if>
+            <if test="ticketPrice != null">ticket_price = #{ticketPrice},</if>
+            <if test="remainingTickets != null">remaining_tickets = #{remainingTickets},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysTrainById" parameterType="Long">
+        delete from sys_train where id = #{id}
+    </delete>
+
+    <delete id="deleteSysTrainByIds" parameterType="String">
+        delete from sys_train where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

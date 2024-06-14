@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysSuggestionMapper">
+    
+    <resultMap type="SysSuggestion" id="SysSuggestionResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="tyep"    column="tyep"    />
+        <result property="context"    column="context"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysSuggestionVo">
+        select id, name, tyep, context, create_by, create_time, remark from sys_suggestion
+    </sql>
+
+    <select id="selectSysSuggestionList" parameterType="SysSuggestion" resultMap="SysSuggestionResult">
+        <include refid="selectSysSuggestionVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="tyep != null  and tyep != ''"> and tyep = #{tyep}</if>
+            <if test="context != null  and context != ''"> and context = #{context}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysSuggestionById" parameterType="Long" resultMap="SysSuggestionResult">
+        <include refid="selectSysSuggestionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysSuggestion" parameterType="SysSuggestion">
+        insert into sys_suggestion
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="tyep != null">tyep,</if>
+            <if test="context != null">context,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="tyep != null">#{tyep},</if>
+            <if test="context != null">#{context},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysSuggestion" parameterType="SysSuggestion">
+        update sys_suggestion
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="tyep != null">tyep = #{tyep},</if>
+            <if test="context != null">context = #{context},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysSuggestionById" parameterType="Long">
+        delete from sys_suggestion where id = #{id}
+    </delete>
+
+    <delete id="deleteSysSuggestionByIds" parameterType="String">
+        delete from sys_suggestion where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

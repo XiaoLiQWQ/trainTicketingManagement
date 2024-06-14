@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysPlaceMapper">
+
+    <resultMap type="SysPlace" id="SysPlaceResult">
+        <result property="id"    column="id"    />
+        <result property="pName"    column="p_name"    />
+        <result property="pAddress"    column="p_address"    />
+        <result property="pNum"    column="p_num"    />
+        <result property="pSchool"    column="p_school"    />
+        <result property="pState"    column="p_state"    />
+        <result property="pTimeEnd"    column="p_time_end"    />
+        <result property="pTimeStart"    column="p_time_start"    />
+    </resultMap>
+
+    <sql id="selectSysPlaceVo">
+        select id, p_name, p_address, p_num, p_school, p_state, p_time_end, p_time_start from sys_place
+    </sql>
+
+    <select id="selectSysPlaceList" parameterType="SysPlace" resultMap="SysPlaceResult">
+        <include refid="selectSysPlaceVo"/>
+        <where>
+            <if test="pName != null  and pName != ''"> and p_name like concat('%', #{pName}, '%')</if>
+            <if test="pAddress != null  and pAddress != ''"> and p_address = #{pAddress}</if>
+            <if test="pNum != null  and pNum != ''"> and p_num = #{pNum}</if>
+            <if test="pSchool != null  and pSchool != ''"> and p_school = #{pSchool}</if>
+            <if test="pState != null  and pState != ''"> and p_state = #{pState}</if>
+            <if test="pTimeEnd != null "> and p_time_end = #{pTimeEnd}</if>
+            <if test="pTimeStart != null "> and p_time_start = #{pTimeStart}</if>
+        </where>
+    </select>
+
+    <select id="selectSysPlaceById" parameterType="Long" resultMap="SysPlaceResult">
+        <include refid="selectSysPlaceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysPlace" parameterType="SysPlace" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_place
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pName != null">p_name,</if>
+            <if test="pAddress != null">p_address,</if>
+            <if test="pNum != null">p_num,</if>
+            <if test="pSchool != null">p_school,</if>
+            <if test="pState != null">p_state,</if>
+            <if test="pTimeEnd != null">p_time_end,</if>
+            <if test="pTimeStart != null">p_time_start,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pName != null">#{pName},</if>
+            <if test="pAddress != null">#{pAddress},</if>
+            <if test="pNum != null">#{pNum},</if>
+            <if test="pSchool != null">#{pSchool},</if>
+            <if test="pState != null">#{pState},</if>
+            <if test="pTimeEnd != null">#{pTimeEnd},</if>
+            <if test="pTimeStart != null">#{pTimeStart},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPlace" parameterType="SysPlace">
+        update sys_place
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pName != null">p_name = #{pName},</if>
+            <if test="pAddress != null">p_address = #{pAddress},</if>
+            <if test="pNum != null">p_num = #{pNum},</if>
+            <if test="pSchool != null">p_school = #{pSchool},</if>
+            <if test="pState != null">p_state = #{pState},</if>
+            <if test="pTimeEnd != null">p_time_end = #{pTimeEnd},</if>
+            <if test="pTimeStart != null">p_time_start = #{pTimeStart},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysPlaceById" parameterType="Long">
+        delete from sys_place where id = #{id}
+    </delete>
+
+    <delete id="deleteSysPlaceByIds" parameterType="String">
+        delete from sys_place where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
